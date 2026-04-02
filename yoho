@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YO! | Premium Indian Sweets</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+/* --- GENERAL --- */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: black;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* --- HEADER --- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: #800000;
+  color: gold;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  transition: background 0.3s ease;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+nav a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+nav a:hover { color: gold; }
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: white;
+  margin: 4px;
+  transition: all 0.3s ease;
+}
+
+nav.active { display: flex; flex-direction: column; gap: 10px; }
+
+@media (max-width: 768px){
+  nav { display: none; }
+  .hamburger { display: flex; }
+}
+
+/* --- MAIN SLIDER --- */
+.slider {
+  position: relative;
+  overflow: hidden;
+  height: 60vh;
+  max-height: 500px;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.slide-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 80%;
+  animation: fadeIn 1.5s ease;
+}
+
+/* --- MAIN SLIDER NAV --- */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  padding: 12px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 20px;
+  user-select: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+  z-index: 10;
+}
+
+.prev:hover, .next:hover {
+  transform: translateY(-50%) scale(1.2);
+  background: rgba(0,0,0,0.6);
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+/* --- DOTS --- */
+.dots {
+  text-align: center;
+  padding: 10px 0;
+  background: #000000;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.dot.active-dot {
+  background-color: gold;
+  transform: scale(1.3);
+}
+
+/* --- SECTIONS --- */
+.section {
+  padding: 60px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #000000, #800000);
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.05);
+
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 1200px;
+  color: white;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- PRODUCTS --- */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: black;
+  border: 2px solid white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
+  transition: 0.3s all;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px gold;
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-bottom: 2px solid white;
+}
+
+.card h3 { 
+  padding: 10px; 
+  color: white;
+}
+
+/* --- TESTIMONIALS --- */
+.testimonials-section h2 { margin-bottom: 30px; }
+
+.slider-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.slider-track {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s ease;
+}
+
+.testimonial-card {
+  flex: 0 0 250px;
+  background: linear-gradient(135deg, #4b2e2e, #800000);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  text-align: center;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.testimonial-text { font-style: italic; margin-bottom: 10px; }
+.testimonial-name { font-weight: bold; color: gold; }
+
+.slider-wrapper button.prev, .slider-wrapper button.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  color: gold;
+  border: none;
+  font-size: 24px;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 20;
+}
+
+.slider-wrapper button.prev:hover, .slider-wrapper button.next:hover {
+  background: gold;
+  color: black;
+  transform: translateY(-50%) scale(1.2);
+}
+
+/* --- CONTACT FORM --- */
+.contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-form input, .contact-form textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid white;
+  background: black;
+  color: white;
+  resize: none;
+}
+
+.contact-form input:focus, .contact-form textarea:focus {
+  outline: none;
+  border-color: gold;
+}
+
+.contact-form button {
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid gold;
+  background: transparent;
+  color: gold;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.contact-form button:hover {
+  background: gold;
+  color: black;
+  transform: scale(1.05);
+}
+
+/* --- FOOTER --- */
+footer {
+  background: #800000;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-top: 2px solid gold;
+}
+
+/* --- KEYFRAMES --- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🍬 YO!</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Products</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</header>
+
+<!-- MAIN SLIDER -->
+<div class="slider" id="slider">
+  <div class="slide fade active">
+    <img src="/home/priyanshu/Desktop/kaju.jpg" alt="Kaju Katli">
+    <div class="slide-text"><h1>Kaju Katli</h1></div>
+  </div>
+  <div class="slide fade">
+    <img src="/home/priyanshu/Desktop/gulab jamun.jpg" alt="Gulab Jamun">
+    <div class="slide-text"><h1>Gulab Jamun</h1></div>
+  </div>
+  <div class="slide fade">
+    <img src="/home/priyanshu/Desktop/rasgulla.jpg" alt="Rasgulla">
+    <div class="slide-text"><h1>Rasgulla</h1></div>
+  </div>
+  <div class="slide fade">
+    <img src="/home/priyanshu/Desktop/motichoor ladoo.jpg" alt="Motichoor Laddoo">
+    <div class="slide-text"><h1>Motichoor Laddoo</h1></div>
+  </div>
+
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+
+<div class="dots">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+  <span class="dot" onclick="currentSlide(4)"></span>
+</div>
+
+<!-- PRODUCTS -->
+<section class="section products-section">
+  <h2>Our Specialties</h2>
+  <div class="products">
+    <div class="card"><img src="/home/priyanshu/Desktop/kaju.jpg" alt="Kaju Katli"><h3>Kaju Katli</h3></div>
+    <div class="card"><img src="/home/priyanshu/Desktop/gulab jamun.jpg" alt="Gulab Jamun"><h3>Gulab Jamun</h3></div>
+    <div class="card"><img src="/home/priyanshu/Desktop/rasgulla.jpg" alt="Rasgulla"><h3>Rasgulla</h3></div>
+    <div class="card"><img src="/home/priyanshu/Desktop/motichoor ladoo.jpg" alt="Motichoor Laddoo"><h3>Motichoor Laddoo</h3></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section about-section">
+  <h2>About YO!</h2>
+  <p>With over 50 years of experience, YO! brings authentic Indian sweets made with tradition, purity, and premium ingredients.</p>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials-section">
+  <h2>Testimonials</h2>
+  <div class="slider-wrapper" id="testimonialSlider">
+    <button class="prev" id="prevBtn">&#10094;</button>
+    <div class="slider-track" id="testimonialTrack">
+      <!-- 15+ testimonials -->
+      <div class="testimonial-card"><p class="testimonial-text">"Absolutely the best sweets!"</p><p class="testimonial-name">- Priya S.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Kaju Katli melts in your mouth!"</p><p class="testimonial-name">- Raj K.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Never disappoints on festivals."</p><p class="testimonial-name">- Ananya P.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Sweet heaven on Earth."</p><p class="testimonial-name">- Vivek M.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Loved the Gulab Jamun!"</p><p class="testimonial-name">- Sneha T.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Quality never compromised."</p><p class="testimonial-name">- Akash R.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Motichoor Laddoo perfection!"</p><p class="testimonial-name">- Neha B.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Flavors remind me of home."</p><p class="testimonial-name">- Rohan D.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Amazing packaging and taste."</p><p class="testimonial-name">- Shreya G.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"The Rasgulla is divine."</p><p class="testimonial-name">- Kiran S.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Highly recommended!"</p><p class="testimonial-name">- Pooja V.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Perfect for gifting."</p><p class="testimonial-name">- Ankit M.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Customer service is great."</p><p class="testimonial-name">- Meera L.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Yummy sweets every time."</p><p class="testimonial-name">- Sanjay P.</p></div>
+      <div class="testimonial-card"><p class="testimonial-text">"Authentic Indian taste preserved."</p><p class="testimonial-name">- Divya R.</p></div>
+    </div>
+    <button class="next" id="nextBtn">&#10095;</button>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact-section">
+  <h2>Contact Us</h2>
+  <form class="contact-form">
+    <input type="text" placeholder="Name" required>
+    <input type="email" placeholder="Email" required>
+    <textarea placeholder="Message" rows="5" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<footer>
+  <p>© 2026 YO!</p>
+</footer>
+
+<script>
+// Hamburger toggle
+const hamburger = document.querySelector('.hamburger');
+const nav = document.querySelector('header nav');
+hamburger.addEventListener('click', () => { nav.classList.toggle('active'); });
+
+// MAIN SLIDER
+let slideIndex = 0;
+let slides = document.querySelectorAll(".slide");
+let dots = document.querySelectorAll(".dot");
+let sliderInterval;
+
+function showSlides(n){
+  slides.forEach(s => s.classList.remove('active'));
+  dots.forEach(d => d.classList.remove('active-dot'));
+  slideIndex = (n + slides.length) % slides.length;
+  slides[slideIndex].classList.add('active');
+  dots[slideIndex].classList.add('active-dot');
+}
+
+function plusSlides(n){ clearInterval(sliderInterval); showSlides(slideIndex+n); autoSlide(); }
+function currentSlide(n){ clearInterval(sliderInterval); showSlides(n-1); autoSlide(); }
+
+function autoSlide(){
+  sliderInterval = setInterval(()=>{ showSlides(slideIndex+1); }, 4000);
+}
+showSlides(slideIndex);
+autoSlide();
+
+// Fade-in sections on scroll
+const sections = document.querySelectorAll('.section');
+window.addEventListener('scroll', () => {
+  sections.forEach(section => {
+    if(section.getBoundingClientRect().top < window.innerHeight - 100){
+      section.classList.add('visible');
+    }
+  });
+});
+
+// TESTIMONIALS SLIDER
+const testimonialSlider = document.getElementById('testimonialSlider');
+const testimonialTrack = document.getElementById('testimonialTrack');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+let testimonialIndex = 0;
+const cardWidth = 270; // 250 + 20 gap
+function moveTestimonials(n){
+  testimonialIndex += n;
+  if(testimonialIndex < 0) testimonialIndex = testimonialTrack.children.length - Math.floor(testimonialSlider.offsetWidth / cardWidth);
+  if(testimonialIndex > testimonialTrack.children.length - Math.floor(testimonialSlider.offsetWidth / cardWidth)) testimonialIndex = 0;
+  testimonialTrack.style.transform = `translateX(${-testimonialIndex * cardWidth}px)`;
+}
+
+prevBtn.addEventListener('click', () => moveTestimonials(-1));
+nextBtn.addEventListener('click', () => moveTestimonials(1));
+
+// Drag functionality
+let isDragging = false, startX, scrollLeft;
+testimonialSlider.addEventListener('mousedown', e => {
+  isDragging = true;
+  startX = e.pageX - testimonialSlider.offsetLeft;
+  scrollLeft = testimonialTrack.offsetLeft;
+});
+testimonialSlider.addEventListener('mouseleave', () => isDragging = false);
+testimonialSlider.addEventListener('mouseup', () => isDragging = false);
+testimonialSlider.addEventListener('mousemove', e => {
+  if(!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - testimonialSlider.offsetLeft;
+  testimonialTrack.style.transform = `translateX(${scrollLeft + (x - startX)}px)`;
+});
+</script>
+</body>
+</html>
