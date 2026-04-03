@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YO! | My Cart</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: black;
+  color: white;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: #800000;
+  color: gold;
+}
+
+header .logo { font-size: 24px; font-weight: bold; }
+
+nav a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+}
+
+nav a:hover { color: gold; }
+
+.cart-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #444;
+}
+
+.cart-item:last-child { border-bottom: none; }
+
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-item h3 { margin: 0; }
+
+.cart-item span { margin-left: 15px; font-weight: bold; color: gold; }
+
+.cart-item button {
+  background: gold;
+  color: black;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-item button:hover { background: white; }
+
+.empty-cart {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ccc;
+  padding: 50px 0;
+}
+
+footer {
+  background: #800000;
+  text-align: center;
+  padding: 15px;
+  margin-top: 40px;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🍬 YO!</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="cart.html">My Cart</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<h1 style="text-align:center; margin-top:40px;">My Cart</h1>
+
+<div class="cart-container" id="cartContainer">
+  <!-- Cart items will appear here -->
+</div>
+
+<footer>
+  <p>© 2026 YO!</p>
+</footer>
+
+<script>
+// Load cart from localStorage
+function loadCart() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const container = document.getElementById('cartContainer');
+  container.innerHTML = '';
+
+  if(cart.length === 0){
+    container.innerHTML = '<p class="empty-cart">Your cart is empty 🛒</p>';
+    return;
+  }
+
+  cart.forEach((item, index) => {
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <img src="${item.img}" alt="${item.name}">
+      <h3>${item.name} <span>${item.qty}</span></h3>
+      <button onclick="removeItem(${index})">Remove</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// Remove item
+function removeItem(index){
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cart.splice(index, 1);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  loadCart();
+}
+
+window.onload = loadCart;
+window.addEventListener("focus", loadCart);
+window.addEventListener("pageshow", loadCart);
+</script>
+
+</body>
+</html>
